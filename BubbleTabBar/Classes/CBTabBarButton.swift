@@ -107,7 +107,7 @@ public class CBTabBarButton: UIControl {
         tabImage.contentMode = .center
         tabImage.translatesAutoresizingMaskIntoConstraints = false
         tabLabel.translatesAutoresizingMaskIntoConstraints = false
-        tabLabel.font = UIFont.systemFont(ofSize: CBTabBarButton.getLabelSize())
+        tabLabel.font = UIFont.systemFont(ofSize: CBTabBarButton.fontSize)
         tabLabel.adjustsFontSizeToFitWidth = false
         tabBg.translatesAutoresizingMaskIntoConstraints = false
         tabBg.isUserInteractionEnabled = false
@@ -147,8 +147,9 @@ public class CBTabBarButton: UIControl {
         setNeedsLayout()
     }
 
-    public var innerSpacingFactor: CGFloat = CBTabBarButton.getInnerSpacingFactor()
-    public var labelLeadingSpacing: CGFloat = CBTabBarButton.getLabelLeadingSpacing()
+    public static var innerSpacingFactor: CGFloat = CBTabBarButton.getInnerSpacingFactor()
+    public static var labelLeadingSpacing: CGFloat = CBTabBarButton.getLabelLeadingSpacing()
+    public static var fontSize: CGFloat = CBTabBarButton.getLabelSize()
 
     private static func getLabelSize() -> CGFloat {
         switch UIDevice().type {
@@ -160,14 +161,14 @@ public class CBTabBarButton: UIControl {
     private static func getInnerSpacingFactor() -> CGFloat {
         switch UIDevice().type {
         case .iPhoneSE, .iPhone5, .iPhone5S: return 4.0
-        default: return 2.0
+        default: return 4.0
         }
     }
     
     private static func getLabelLeadingSpacing() -> CGFloat {
         switch UIDevice().type {
         case .iPhoneSE, .iPhone5, .iPhone5S: return 6.0
-        default: return 4.0
+        default: return 6.0
         }
     }
     
