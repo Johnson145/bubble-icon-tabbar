@@ -39,9 +39,12 @@ public class CBTabBarButton: UIControl {
         configureSubviews()
     }
 
+    static var deselectedImageColor: UIColor = .white
+    
     init(item: UITabBarItem) {
         super.init(frame: .zero)
         tabImage = UIImageView(image: item.image)
+        tabImage.tintColor = CBTabBarButton.deselectedImageColor
         defer {
             self.item = item
             configureSubviews()
@@ -182,7 +185,7 @@ public class CBTabBarButton: UIControl {
             self.tabLabel.alpha = 0.0
         }
         UIView.transition(with: tabImage, duration: duration, options: [.transitionCrossDissolve], animations: {
-            self.tabImage.tintColor = .black
+            self.tabImage.tintColor = CBTabBarButton.deselectedImageColor
         }, completion: nil)
 
     }
