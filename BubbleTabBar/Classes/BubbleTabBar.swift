@@ -81,6 +81,22 @@ open class BubbleTabBar: UITabBar {
     
     private var csContainerBottom: NSLayoutConstraint!
     
+    private func getTopSpacing() -> CGFloat {
+        if #available(iOS 13.0, *) {
+            return 10
+        } else {
+            return 1
+        }
+    }
+    
+    private func getBottomSpacing() -> CGFloat {
+        if #available(iOS 11.0, *) {
+            return 10
+        } else {
+            return 10
+        }
+    }
+    
     private func configure() {
         backgroundColor = UIColor.white
         isTranslucent = false
@@ -89,14 +105,8 @@ open class BubbleTabBar: UITabBar {
         addSubview(container)
         container.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 10).isActive = true
         container.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -10).isActive = true
-        container.topAnchor.constraint(equalTo: topAnchor, constant: 1).isActive = true
-        let bottomOffset: CGFloat
-        if #available(iOS 11.0, *) {
-            bottomOffset = safeAreaInsets.bottom
-        } else {
-            bottomOffset = 0
-        }
-        csContainerBottom = container.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -bottomOffset)
+        container.topAnchor.constraint(equalTo: topAnchor, constant: self.getTopSpacing()).isActive = true
+        csContainerBottom = container.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -getBottomSpacing())
         csContainerBottom.isActive = true
     }
     

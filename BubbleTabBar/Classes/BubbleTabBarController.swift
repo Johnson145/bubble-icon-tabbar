@@ -49,14 +49,16 @@ open class BubbleTabBarController: UITabBarController {
         super.viewDidAppear(animated)
     }
 
-    private var _barHeight: CGFloat = 74
+    private var _barHeight: CGFloat = 49
     open var barHeight: CGFloat {
         get {
+            var ret:CGFloat = 0.0
             if #available(iOS 11.0, *) {
-                return _barHeight + view.safeAreaInsets.bottom
+                ret = _barHeight + view.safeAreaInsets.bottom
             } else {
-                return _barHeight
+                ret = _barHeight
             }
+            return ret
         }
         set {
             _barHeight = newValue
