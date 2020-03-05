@@ -107,8 +107,8 @@ public class CBTabBarButton: UIControl {
         tabImage.contentMode = .center
         tabImage.translatesAutoresizingMaskIntoConstraints = false
         tabLabel.translatesAutoresizingMaskIntoConstraints = false
-        tabLabel.font = UIFont.systemFont(ofSize: 14)
-        tabLabel.adjustsFontSizeToFitWidth = true
+        tabLabel.font = UIFont.systemFont(ofSize: CBTabBarButton.getLabelSize())
+        tabLabel.adjustsFontSizeToFitWidth = false
         tabBg.translatesAutoresizingMaskIntoConstraints = false
         tabBg.isUserInteractionEnabled = false
         tabImage.setContentHuggingPriority(.required, for: .horizontal)
@@ -126,27 +126,51 @@ public class CBTabBarButton: UIControl {
         tabBg.heightAnchor.constraint(equalToConstant: bgHeight).isActive = true
         
         if rightToLeft {
-            tabImage.trailingAnchor.constraint(equalTo: tabBg.trailingAnchor, constant: -bgHeight/2.0).isActive = true
+            tabImage.trailingAnchor.constraint(equalTo: tabBg.trailingAnchor, constant: -bgHeight/CBTabBarButton.getInnerSpacingFactor()).isActive = true
             tabImage.centerYAnchor.constraint(equalTo: tabBg.centerYAnchor).isActive = true
             tabLabel.centerYAnchor.constraint(equalTo: tabBg.centerYAnchor).isActive = true
             csFoldedLblLeading = tabLabel.leadingAnchor.constraint(equalTo: tabBg.trailingAnchor)
-            csUnfoldedLblLeading = tabLabel.leadingAnchor.constraint(equalTo: tabBg.leadingAnchor, constant: bgHeight/4.0)
-            csFoldedBgTrailing = tabImage.trailingAnchor.constraint(equalTo: tabBg.leadingAnchor, constant: bgHeight/2.0)
-            csUnfoldedBgTrailing = tabLabel.trailingAnchor.constraint(equalTo: tabImage.leadingAnchor, constant: -bgHeight/2.0)
+            csUnfoldedLblLeading = tabLabel.leadingAnchor.constraint(equalTo: tabBg.leadingAnchor, constant: bgHeight/CBTabBarButton.getLabelLeadingSpacing())
+            csFoldedBgTrailing = tabImage.trailingAnchor.constraint(equalTo: tabBg.leadingAnchor, constant: bgHeight/CBTabBarButton.getInnerSpacingFactor())
+            csUnfoldedBgTrailing = tabLabel.trailingAnchor.constraint(equalTo: tabImage.leadingAnchor, constant: -bgHeight/CBTabBarButton.getInnerSpacingFactor())
         } else {
             tabImage.leadingAnchor.constraint(equalTo: tabBg.leadingAnchor, constant: bgHeight/2.0).isActive = true
             tabImage.centerYAnchor.constraint(equalTo: tabBg.centerYAnchor).isActive = true
             tabLabel.centerYAnchor.constraint(equalTo: centerYAnchor).isActive = true
             csFoldedLblLeading = tabLabel.leadingAnchor.constraint(equalTo: leadingAnchor)
-            csUnfoldedLblLeading = tabLabel.leadingAnchor.constraint(equalTo: tabImage.trailingAnchor, constant: bgHeight/4.0)
-            csFoldedBgTrailing = tabImage.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -bgHeight/2.0)
-            csUnfoldedBgTrailing = tabLabel.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -bgHeight/2.0)
+            csUnfoldedLblLeading = tabLabel.leadingAnchor.constraint(equalTo: tabImage.trailingAnchor, constant: bgHeight/CBTabBarButton.getLabelLeadingSpacing())
+            csFoldedBgTrailing = tabImage.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -bgHeight/CBTabBarButton.getInnerSpacingFactor())
+            csUnfoldedBgTrailing = tabLabel.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -bgHeight/CBTabBarButton.getInnerSpacingFactor())
         }
         
         fold()
         setNeedsLayout()
     }
 
+    public var innerSpacingFactor: CGFloat = CBTabBarButton.getInnerSpacingFactor()
+    public var labelLeadingSpacing: CGFloat = CBTabBarButton.getLabelLeadingSpacing()
+
+    private static func getLabelSize() -> CGFloat {
+        switch UIDevice().type {
+        case .iPhoneSE, .iPhone5, .iPhone5S: return 12.0
+        default: return 12.0
+        }
+    }
+    
+    private static func getInnerSpacingFactor() -> CGFloat {
+        switch UIDevice().type {
+        case .iPhoneSE, .iPhone5, .iPhone5S: return 4.0
+        default: return 2.0
+        }
+    }
+    
+    private static func getLabelLeadingSpacing() -> CGFloat {
+        switch UIDevice().type {
+        case .iPhoneSE, .iPhone5, .iPhone5S: return 6.0
+        default: return 4.0
+        }
+    }
+    
     private func fold(animationDuration duration: Double = 0.0) {
         unfoldedConstraints.forEach{ $0.isActive = false }
         foldedConstraints.forEach{ $0.isActive = true }
