@@ -150,8 +150,13 @@ public class CBTabBarButton: UIControl {
         setNeedsLayout()
     }
 
+    /// The spacing factor (which is bgHeight/innerspacingFactor) for the outer part of the "bubble"
+    /// higher = less spacing
     public static var innerSpacingFactor: CGFloat = CBTabBarButton.getInnerSpacingFactor()
+    /// The spacing factor (which is bgHeight/labelLeadingSpacing) for the inner part between image and label
+    /// higher = less spacing
     public static var labelLeadingSpacing: CGFloat = CBTabBarButton.getLabelLeadingSpacing()
+    /// The fontSize for the tab buttons
     public static var fontSize: CGFloat = CBTabBarButton.getLabelSize()
 
     private static func getLabelSize() -> CGFloat {
