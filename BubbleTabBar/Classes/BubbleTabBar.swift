@@ -9,8 +9,13 @@
 import UIKit
 
 public struct BubbleButtonConfig {
-    public let deselectedImageColor: UIColor
-    public let bubbleBackgroundColor: UIColor
+    let deselectedImageColor: UIColor
+    let bubbleBackgroundColor: UIColor
+    
+    public init(deselectedImageColor: UIColor, bubbleBackgroundColor: UIColor) {
+        self.deselectedImageColor = deselectedImageColor
+        self.bubbleBackgroundColor = bubbleBackgroundColor
+    }
 }
 
 open class BubbleTabBar: UITabBar {
