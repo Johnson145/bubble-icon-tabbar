@@ -8,7 +8,21 @@
 
 import UIKit
 
+public struct BubbleButtonConfig {
+    let deselectedImageColor: UIColor
+    let bubbleBackgroundColor: UIColor
+}
+
 open class BubbleTabBar: UITabBar {
+    
+    /// Setting this value will style all buttons for this TabBar differently
+    public var buttonConfig: BubbleButtonConfig = BubbleButtonConfig(deselectedImageColor: .white,          bubbleBackgroundColor: UIColor.white.withAlphaComponent(0.2)) {
+        didSet {
+            for button in self.buttons {
+                button.setConfig(config: self.buttonConfig)
+            }
+        }
+    }
     
     private var buttons: [CBTabBarButton] = []
     public var animationDuration: Double = 0.3

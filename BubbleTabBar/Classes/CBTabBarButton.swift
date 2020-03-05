@@ -14,7 +14,26 @@ public class CBTabBarItem: UITabBarItem {
 }
 
 public class CBTabBarButton: UIControl {
-
+    
+    /// Override the config
+    public func setConfig(config: BubbleButtonConfig) {
+        self.bubbleBackgroundColor = config.bubbleBackgroundColor
+        self.deselectedImageColor = config.deselectedImageColor
+    }
+    
+    /// The background Color of the bubble (the background of image and label of a button)
+    var bubbleBackgroundColor: UIColor = UIColor.white.withAlphaComponent(0.2) {
+        didSet {
+            tabBg.backgroundColor = self.bubbleBackgroundColor
+        }
+    }
+    /// The image color of a deselected image
+    var deselectedImageColor: UIColor = .white {
+        didSet {
+            tabImage.tintColor = self.deselectedImageColor
+        }
+    }
+    
     var rightToLeft:Bool = false
     private var _isSelected: Bool = false
     override public var isSelected: Bool {
@@ -39,12 +58,11 @@ public class CBTabBarButton: UIControl {
         configureSubviews()
     }
 
-    static var deselectedImageColor: UIColor = .white
+    
     
     init(item: UITabBarItem) {
         super.init(frame: .zero)
         tabImage = UIImageView(image: item.image)
-        tabImage.tintColor = CBTabBarButton.deselectedImageColor
         defer {
             self.item = item
             configureSubviews()
@@ -77,15 +95,13 @@ public class CBTabBarButton: UIControl {
         }
     }
 
-    /// The background Color of the bubble (the background of image and label of a button)
-    static var bubbleBackgroundColor: UIColor = UIColor.white.withAlphaComponent(0.2)
+    
     override public var tintColor: UIColor! {
         didSet {
             if _isSelected {
                 tabImage.tintColor = tintColor
             }
             tabLabel.textColor = tintColor
-            tabBg.backgroundColor = CBTabBarButton.bubbleBackgroundColor
         }
     }
 
@@ -192,7 +208,7 @@ public class CBTabBarButton: UIControl {
             self.tabLabel.alpha = 0.0
         }
         UIView.transition(with: tabImage, duration: duration, options: [.transitionCrossDissolve], animations: {
-            self.tabImage.tintColor = CBTabBarButton.deselectedImageColor
+            self.tabImage.tintColor = self.deselectedImageColor
         }, completion: nil)
 
     }
