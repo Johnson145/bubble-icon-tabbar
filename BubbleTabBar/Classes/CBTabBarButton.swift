@@ -77,13 +77,15 @@ public class CBTabBarButton: UIControl {
         }
     }
 
+    /// The background Color of the bubble (the background of image and label of a button)
+    static var bubbleBackgroundColor: UIColor = UIColor.white.withAlphaComponent(0.2)
     override public var tintColor: UIColor! {
         didSet {
             if _isSelected {
                 tabImage.tintColor = tintColor
             }
             tabLabel.textColor = tintColor
-            tabBg.backgroundColor = tintColor.withAlphaComponent(0.2)
+            tabBg.backgroundColor = CBTabBarButton.bubbleBackgroundColor
         }
     }
 
