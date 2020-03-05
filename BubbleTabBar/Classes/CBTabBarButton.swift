@@ -134,7 +134,7 @@ public class CBTabBarButton: UIControl {
             csFoldedBgTrailing = tabImage.trailingAnchor.constraint(equalTo: tabBg.leadingAnchor, constant: bgHeight/CBTabBarButton.getInnerSpacingFactor())
             csUnfoldedBgTrailing = tabLabel.trailingAnchor.constraint(equalTo: tabImage.leadingAnchor, constant: -bgHeight/CBTabBarButton.getInnerSpacingFactor())
         } else {
-            tabImage.leadingAnchor.constraint(equalTo: tabBg.leadingAnchor, constant: bgHeight/2.0).isActive = true
+            tabImage.leadingAnchor.constraint(equalTo: tabBg.leadingAnchor, constant: bgHeight/CBTabBarButton.getInnerSpacingFactor()).isActive = true
             tabImage.centerYAnchor.constraint(equalTo: tabBg.centerYAnchor).isActive = true
             tabLabel.centerYAnchor.constraint(equalTo: centerYAnchor).isActive = true
             csFoldedLblLeading = tabLabel.leadingAnchor.constraint(equalTo: leadingAnchor)
