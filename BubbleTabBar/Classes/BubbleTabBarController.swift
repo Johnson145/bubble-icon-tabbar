@@ -56,7 +56,7 @@ open class BubbleTabBarController: UITabBarController {
             if #available(iOS 11.0, *) {
                 ret = _barHeight + view.safeAreaInsets.bottom
             } else {
-                ret = _barHeight
+                ret = _barHeight + 15
             }
             return ret
         }
