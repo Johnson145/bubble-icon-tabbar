@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		1447ADA324111BA500E612B0 /* DeviceHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1447ADA224111BA500E612B0 /* DeviceHelper.swift */; };
 		CEA25522220D8BB500420609 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = CEA25520220D8BB500420609 /* LaunchScreen.storyboard */; };
 		CECEA1D821B6767100F15B7A /* BubbleTabBar.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CECEA1D121B6767100F15B7A /* BubbleTabBar.framework */; };
 		CECEA1D921B6767100F15B7A /* BubbleTabBar.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = CECEA1D121B6767100F15B7A /* BubbleTabBar.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
@@ -46,6 +47,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		1447ADA224111BA500E612B0 /* DeviceHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeviceHelper.swift; sourceTree = "<group>"; };
 		CEA25521220D8BB500420609 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		CECEA1A621B6758200F15B7A /* ExampleApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ExampleApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		CECEA1D121B6767100F15B7A /* BubbleTabBar.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = BubbleTabBar.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -145,6 +147,7 @@
 				CECEA1F821B676FF00F15B7A /* BubbleTabBar.swift */,
 				CECEA1F921B676FF00F15B7A /* CBTabBarButton.swift */,
 				CECEA1FA21B676FF00F15B7A /* BubbleTabBarController.swift */,
+				1447ADA224111BA500E612B0 /* DeviceHelper.swift */,
 			);
 			path = Classes;
 			sourceTree = "<group>";
@@ -283,6 +286,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				CECEA20321B676FF00F15B7A /* BubbleTabBarController.swift in Sources */,
+				1447ADA324111BA500E612B0 /* DeviceHelper.swift in Sources */,
 				CECEA20221B676FF00F15B7A /* CBTabBarButton.swift in Sources */,
 				CECEA20121B676FF00F15B7A /* BubbleTabBar.swift in Sources */,
 			);

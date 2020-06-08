@@ -14,7 +14,26 @@ public class CBTabBarItem: UITabBarItem {
 }
 
 public class CBTabBarButton: UIControl {
-
+    
+    /// Override the config
+    public func setConfig(config: BubbleButtonConfig) {
+        self.bubbleBackgroundColor = config.bubbleBackgroundColor
+        self.deselectedImageColor = config.deselectedImageColor
+    }
+    
+    /// The background Color of the bubble (the background of image and label of a button)
+    var bubbleBackgroundColor: UIColor = UIColor.white.withAlphaComponent(0.2) {
+        didSet {
+            tabBg.backgroundColor = self.bubbleBackgroundColor
+        }
+    }
+    /// The image color of a deselected image
+    var deselectedImageColor: UIColor = .white {
+        didSet {
+            tabImage.tintColor = self.deselectedImageColor
+        }
+    }
+    
     var rightToLeft:Bool = false
     private var _isSelected: Bool = false
     override public var isSelected: Bool {
@@ -39,6 +58,8 @@ public class CBTabBarButton: UIControl {
         configureSubviews()
     }
 
+    
+    
     init(item: UITabBarItem) {
         super.init(frame: .zero)
         tabImage = UIImageView(image: item.image)
@@ -74,13 +95,13 @@ public class CBTabBarButton: UIControl {
         }
     }
 
+    
     override public var tintColor: UIColor! {
         didSet {
             if _isSelected {
                 tabImage.tintColor = tintColor
             }
             tabLabel.textColor = tintColor
-            tabBg.backgroundColor = tintColor.withAlphaComponent(0.2)
         }
     }
 
@@ -107,8 +128,8 @@ public class CBTabBarButton: UIControl {
         tabImage.contentMode = .center
         tabImage.translatesAutoresizingMaskIntoConstraints = false
         tabLabel.translatesAutoresizingMaskIntoConstraints = false
-        tabLabel.font = UIFont.systemFont(ofSize: 14)
-        tabLabel.adjustsFontSizeToFitWidth = true
+        tabLabel.font = UIFont.systemFont(ofSize: CBTabBarButton.fontSize)
+        tabLabel.adjustsFontSizeToFitWidth = false
         tabBg.translatesAutoresizingMaskIntoConstraints = false
         tabBg.isUserInteractionEnabled = false
         tabImage.setContentHuggingPriority(.required, for: .horizontal)
@@ -126,27 +147,57 @@ public class CBTabBarButton: UIControl {
         tabBg.heightAnchor.constraint(equalToConstant: bgHeight).isActive = true
         
         if rightToLeft {
-            tabImage.trailingAnchor.constraint(equalTo: tabBg.trailingAnchor, constant: -bgHeight/2.0).isActive = true
+            tabImage.trailingAnchor.constraint(equalTo: tabBg.trailingAnchor, constant: -bgHeight/CBTabBarButton.getInnerSpacingFactor()).isActive = true
             tabImage.centerYAnchor.constraint(equalTo: tabBg.centerYAnchor).isActive = true
             tabLabel.centerYAnchor.constraint(equalTo: tabBg.centerYAnchor).isActive = true
             csFoldedLblLeading = tabLabel.leadingAnchor.constraint(equalTo: tabBg.trailingAnchor)
-            csUnfoldedLblLeading = tabLabel.leadingAnchor.constraint(equalTo: tabBg.leadingAnchor, constant: bgHeight/4.0)
-            csFoldedBgTrailing = tabImage.trailingAnchor.constraint(equalTo: tabBg.leadingAnchor, constant: bgHeight/2.0)
-            csUnfoldedBgTrailing = tabLabel.trailingAnchor.constraint(equalTo: tabImage.leadingAnchor, constant: -bgHeight/2.0)
+            csUnfoldedLblLeading = tabLabel.leadingAnchor.constraint(equalTo: tabBg.leadingAnchor, constant: bgHeight/CBTabBarButton.getLabelLeadingSpacing())
+            csFoldedBgTrailing = tabImage.trailingAnchor.constraint(equalTo: tabBg.leadingAnchor, constant: bgHeight/CBTabBarButton.getInnerSpacingFactor())
+            csUnfoldedBgTrailing = tabLabel.trailingAnchor.constraint(equalTo: tabImage.leadingAnchor, constant: -bgHeight/CBTabBarButton.getInnerSpacingFactor())
         } else {
-            tabImage.leadingAnchor.constraint(equalTo: tabBg.leadingAnchor, constant: bgHeight/2.0).isActive = true
+            tabImage.leadingAnchor.constraint(equalTo: tabBg.leadingAnchor, constant: bgHeight/CBTabBarButton.getInnerSpacingFactor()).isActive = true
             tabImage.centerYAnchor.constraint(equalTo: tabBg.centerYAnchor).isActive = true
             tabLabel.centerYAnchor.constraint(equalTo: centerYAnchor).isActive = true
             csFoldedLblLeading = tabLabel.leadingAnchor.constraint(equalTo: leadingAnchor)
-            csUnfoldedLblLeading = tabLabel.leadingAnchor.constraint(equalTo: tabImage.trailingAnchor, constant: bgHeight/4.0)
-            csFoldedBgTrailing = tabImage.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -bgHeight/2.0)
-            csUnfoldedBgTrailing = tabLabel.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -bgHeight/2.0)
+            csUnfoldedLblLeading = tabLabel.leadingAnchor.constraint(equalTo: tabImage.trailingAnchor, constant: bgHeight/CBTabBarButton.getLabelLeadingSpacing())
+            csFoldedBgTrailing = tabImage.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -bgHeight/CBTabBarButton.getInnerSpacingFactor())
+            csUnfoldedBgTrailing = tabLabel.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -bgHeight/CBTabBarButton.getInnerSpacingFactor())
         }
         
         fold()
         setNeedsLayout()
     }
 
+    /// The spacing factor (which is bgHeight/innerspacingFactor) for the outer part of the "bubble"
+    /// higher = less spacing
+    public static var innerSpacingFactor: CGFloat = CBTabBarButton.getInnerSpacingFactor()
+    /// The spacing factor (which is bgHeight/labelLeadingSpacing) for the inner part between image and label
+    /// higher = less spacing
+    public static var labelLeadingSpacing: CGFloat = CBTabBarButton.getLabelLeadingSpacing()
+    /// The fontSize for the tab buttons
+    public static var fontSize: CGFloat = CBTabBarButton.getLabelSize()
+
+    private static func getLabelSize() -> CGFloat {
+        switch UIDevice().type {
+        case .iPhoneSE, .iPhone5, .iPhone5S: return 12.0
+        default: return 12.0
+        }
+    }
+    
+    private static func getInnerSpacingFactor() -> CGFloat {
+        switch UIDevice().type {
+        case .iPhoneSE, .iPhone5, .iPhone5S: return 4.0
+        default: return 4.0
+        }
+    }
+    
+    private static func getLabelLeadingSpacing() -> CGFloat {
+        switch UIDevice().type {
+        case .iPhoneSE, .iPhone5, .iPhone5S: return 6.0
+        default: return 6.0
+        }
+    }
+    
     private func fold(animationDuration duration: Double = 0.0) {
         unfoldedConstraints.forEach{ $0.isActive = false }
         foldedConstraints.forEach{ $0.isActive = true }
@@ -157,7 +208,7 @@ public class CBTabBarButton: UIControl {
             self.tabLabel.alpha = 0.0
         }
         UIView.transition(with: tabImage, duration: duration, options: [.transitionCrossDissolve], animations: {
-            self.tabImage.tintColor = .black
+            self.tabImage.tintColor = self.deselectedImageColor
         }, completion: nil)
 
     }
