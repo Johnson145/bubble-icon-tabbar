@@ -131,7 +131,13 @@ open class BubbleTabBar: UITabBar {
     private var spaceLayoutGuides:[UILayoutGuide] = []
     
     private func reloadViews() {
-        subviews.filter { String(describing: type(of: $0)) == "UITabBarButton" }.forEach { $0.removeFromSuperview() }
+        // Remove the native tab bar buttons. Historically this matched the private class
+        // name "UITabBarButton", but under the iOS 15+/26 UITabBarAppearance rendering the
+        // native items are no longer that exact class, so they leaked through underneath our
+        // custom buttons (two overlapping tab bars). Match by UIControl type instead — our own
+        // CBTabBarButtons live inside `container`, so only the native buttons are direct
+        // UIControl subviews here (the container and background views are non-controls).
+        subviews.filter { $0 is UIControl }.forEach { $0.removeFromSuperview() }
         buttons.forEach { $0.removeFromSuperview() }
         spaceLayoutGuides.forEach { self.container.removeLayoutGuide($0) }
         buttons = items?.map { self.button(forItem: $0) } ?? []
