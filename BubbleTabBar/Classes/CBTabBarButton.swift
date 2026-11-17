@@ -105,6 +105,28 @@ public class CBTabBarButton: UIControl {
         }
     }
 
+    // Expose the custom button to VoiceOver & co. Since iOS 26, BubbleTabBar hides the native tab bar items (which
+    // used to provide the accessibility elements while being invisible), so the custom buttons have to do it now.
+    public override var isAccessibilityElement: Bool {
+        get { return true }
+        set { }
+    }
+
+    public override var accessibilityLabel: String? {
+        get { return item?.accessibilityLabel ?? item?.title }
+        set { }
+    }
+
+    public override var accessibilityIdentifier: String? {
+        get { return item?.accessibilityIdentifier }
+        set { }
+    }
+
+    public override var accessibilityTraits: UIAccessibilityTraits {
+        get { return _isSelected ? [.button, .selected] : .button }
+        set { }
+    }
+
     private var tabImage = UIImageView()
     private var tabLabel = UILabel()
     private var tabBg = UIView()
