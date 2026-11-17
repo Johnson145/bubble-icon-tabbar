@@ -138,6 +138,7 @@ open class BubbleTabBar: UITabBar {
         // CBTabBarButtons live inside `container`, so only the native buttons are direct
         // UIControl subviews here (the container and background views are non-controls).
         subviews.filter { $0 is UIControl }.forEach { $0.removeFromSuperview() }
+        hideNativeItemContainers()
         buttons.forEach { $0.removeFromSuperview() }
         spaceLayoutGuides.forEach { self.container.removeLayoutGuide($0) }
         buttons = items?.map { self.button(forItem: $0) } ?? []
@@ -168,6 +169,24 @@ open class BubbleTabBar: UITabBar {
             layoutGuide.widthAnchor.constraint(equalTo: spaceLayoutGuides[0].widthAnchor, multiplier: 1.0).isActive = true;
         }
         layoutIfNeeded()
+    }
+    
+    open override func layoutSubviews() {
+        super.layoutSubviews()
+        // UIKit (re-)creates its own item views lazily during layout, so this needs to be repeated
+        hideNativeItemContainers()
+    }
+    
+    /// Since iOS 26 (Liquid Glass; enforced for all apps built with the iOS 27 SDK), the native tab bar items are no
+    /// longer direct subviews: they live inside a glass "platter" view (`_UITabBarItemPlatterView` holding
+    /// `_UITabButton` controls), which also renders vibrant copies of the item icons/titles that ignore any
+    /// UITabBarAppearance colors. Removing the direct UIControl subviews (see reloadViews()) doesn't catch them, so
+    /// they showed up as "ghost icons" next to our bubble buttons. Hide every direct subview (except our own
+    /// `container`) that hosts native controls instead. Background views don't contain any controls, so they stay.
+    private func hideNativeItemContainers() {
+        for subview in subviews where subview !== container && !subview.isHidden && subview.containsControl {
+            subview.isHidden = true
+        }
     }
     
     private func button(forItem item: UITabBarItem) -> CBTabBarButton {
@@ -214,4 +233,11 @@ open class BubbleTabBar: UITabBar {
         }
     }
     
+}
+
+private extension UIView {
+    /// Whether any (nested) subview of this view is a UIControl.
+    var containsControl: Bool {
+        return subviews.contains { $0 is UIControl || $0.containsControl }
+    }
 }
